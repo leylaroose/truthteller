@@ -741,6 +741,86 @@ h2 {
   }
 }
 
+@media (max-width: 700px) {
+  .screen {
+    padding: 2.5vh 5vw 7vh;
+  }
+
+  .oracle-card {
+    width: min(92vw, 500px);
+    padding: 24px 22px;
+  }
+
+  .orbStage {
+    width: min(74vw, 400px);
+    margin-top: -22px;
+    margin-bottom: -6px;
+  }
+
+  .oracle-title {
+    font-size: 34px;
+  }
+
+  .oracle-subline {
+    font-size: 15px;
+  }
+
+  .start-button,
+  .restart-button {
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+    min-height: 52px;
+  }
+
+  .brand-logo img {
+    width: 120px;
+  }
+
+  .statement .card,
+  .result .panel,
+  .loading .panel {
+    width: min(92vw, 520px);
+    max-width: 92vw;
+  }
+
+  .statement h2 {
+    font-size: 2.1rem;
+  }
+
+  .result h2,
+  .accent {
+    font-size: 2.2rem;
+  }
+
+  .result .description {
+    font-size: 1rem;
+  }
+
+  .choice-bar {
+    gap: 30px;
+  }
+
+  .choice {
+    width: 66px;
+    height: 66px;
+    font-size: 1.8rem;
+  }
+
+  .sparkles.top-right {
+    top: 24px;
+    right: 24px;
+  }
+
+  .sparkles.bottom-left {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .sparkle {
+    transform: scale(0.8);
+  }
+}
+
 @media (max-height: 720px) {
   .oracle-card {
     padding: 26px 20px;
