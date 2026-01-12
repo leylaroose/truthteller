@@ -81,12 +81,14 @@ let statementIndex = 0;
 let loadingTimer = null;
 let loadingLineTimer = null;
 const loadingLines = [
-  "Aligning the stars... ✨",
-  "Consulting the oracle... 🔮",
-  "Revealing your marketing type... 👀",
+  "Aligning the stars.. ⭐️",
+  "Consulting the oracle.. 🔮",
+  "Revealing your marketing type.. 👀",
 ];
-const loadingCycleMs = 2200;
+const loadingLineDurations = [800, 800, 800];
 const loadingFinalPauseMs = 1000;
+const UI_SCALE_MIN = 0.6;
+const UI_SCALE_MAX = 0.85;
 
 const screenFactory = {
   HERO: () => {
@@ -205,7 +207,35 @@ function render() {
   appRoot.appendChild(screen);
   requestAnimationFrame(() => {
     screen.classList.add("enter");
+    updateUiScale();
   });
+}
+
+function updateUiScale() {
+  document.documentElement.style.setProperty("--ui-scale", "1");
+  const screen = appRoot.querySelector(".screen");
+  const content = appRoot.querySelector(
+    ".hero-start, .statement-stack, .result-stack, .loading .panel",
+  );
+  if (!content || !screen) return;
+
+  const styles = window.getComputedStyle(screen);
+  const paddingX =
+    parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+  const paddingY =
+    parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
+  const availableWidth = Math.max(window.innerWidth - paddingX - 24, 0);
+  const availableHeight = Math.max(window.innerHeight - paddingY - 24, 0);
+  const contentWidth = Math.max(content.scrollWidth, 1);
+  const contentHeight = Math.max(content.scrollHeight, 1);
+  const scale = Math.min(
+    availableWidth / contentWidth,
+    availableHeight / contentHeight,
+    UI_SCALE_MAX,
+  );
+
+  const nextScale = Math.max(scale, UI_SCALE_MIN);
+  document.documentElement.style.setProperty("--ui-scale", nextScale.toFixed(3));
 }
 
 function nextStatement() {
@@ -218,22 +248,30 @@ function nextStatement() {
     const loadingLine = document.querySelector("[data-loading-line]");
     const totalLoadingMs = Math.max(
       CONFIG.app.loadingSeconds * 1000,
-      (loadingLines.length - 1) * loadingCycleMs + loadingFinalPauseMs,
+      loadingLineDurations.reduce((sum, duration) => sum + duration, 0) +
+        loadingFinalPauseMs,
     );
     if (loadingLine) {
       let index = 0;
       loadingLine.textContent = loadingLines[index];
       clearInterval(loadingLineTimer);
-      loadingLineTimer = window.setInterval(() => {
-        if (index < loadingLines.length - 1) {
+      const scheduleNextLine = () => {
+        if (index >= loadingLines.length - 1) {
+          return;
+        }
+        const delay = loadingLineDurations[index];
+        clearTimeout(loadingLineTimer);
+        loadingLineTimer = window.setTimeout(() => {
           index += 1;
           loadingLine.classList.add("is-fading");
           window.setTimeout(() => {
             loadingLine.textContent = loadingLines[index];
             loadingLine.classList.remove("is-fading");
+            scheduleNextLine();
           }, 220);
-        }
-      }, loadingCycleMs);
+        }, delay);
+      };
+      scheduleNextLine();
     }
     loadingTimer = window.setTimeout(() => {
       clearInterval(loadingLineTimer);
@@ -300,5 +338,7 @@ appRoot.addEventListener("touchstart", (event) => {
     handleChoice(choiceButton.getAttribute("data-choice"));
   }
 });
+
+window.addEventListener("resize", updateUiScale);
 
 render();

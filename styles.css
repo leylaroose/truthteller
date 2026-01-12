@@ -12,6 +12,7 @@
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
   --radius: 40px;
   --panel-padding: 3rem 4rem;
+  --ui-scale: 1;
 }
 
 @font-face {
@@ -78,13 +79,13 @@ body {
 }
 
 .sparkles.top-right {
-  top: 90px;
-  right: 220px;
+  top: 40px;
+  right: 90px;
 }
 
 .sparkles.bottom-left {
-  bottom: 170px;
-  left: 220px;
+  bottom: 60px;
+  left: 120px;
 }
 
 .sparkle {
@@ -207,7 +208,7 @@ body {
 
 .brand-logo img {
   display: block;
-  width: 180px;
+  width: clamp(120px, 12vw, 180px);
   height: auto;
 }
 
@@ -239,6 +240,7 @@ body {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 400ms ease, transform 400ms ease;
+  zoom: var(--ui-scale);
 }
 
 .screen.enter {
@@ -747,6 +749,4 @@ h2 {
   .oracle-content {
     gap: 12px;
   }
-
- 
 }
