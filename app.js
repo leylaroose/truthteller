@@ -13,21 +13,24 @@ const CONFIG = {
   types: [
     {
       id: "TYPE_GROWTH_GREMLIN",
-      name: "THE GROWTH GREMLIN",
-      description: "Fast decisions. Big momentum.\nYou’d rather move than overthink.",
-      bridgeLine: "The trick is scaling fast without burning budget. Sovendus can help you with that! Grab your gift and let's chat!",
+      name: "CAPY ON A MISSON",
+      description: "You move fast, test early, and learn on the go.",
+      bridgeLine: "The trick is keeping that momentum without burning budget. Sovendus can help you with that. Grab your gift and let's chat.",
+      image: "capy on a misson.png",
     },
     {
       id: "TYPE_KPI_MONK",
       name: "THE KPI MONK",
       description: "Clear goals. Clean numbers.\nIf it doesn’t perform, it doesn’t matter.",
       bridgeLine: "You care about results you can actually prove. Sovendus can help you with that! Grab your gift and let's chat!",
+      image: "kpi monk.png",
     },
     {
       id: "TYPE_BRAND_SPARK",
       name: "THE BRAND SPARK",
       description: "Strong ideas. Good instincts.\nNot everything needs a spreadsheet.",
       bridgeLine: "The challenge is turning great brand moments into real impact. Sovendus can help you with that! Grab your gift and let's chat!",
+      image: "brand spark.png",
     },
   ],
   statements: [
@@ -159,6 +162,10 @@ const screenFactory = {
     wrapper.innerHTML = `
       <div class="result-stack">
         <div class="panel">
+        <div class="result-type-stage">
+          <div class="result-type-shadow" aria-hidden="true"></div>
+          <img class="result-type-image" src="${winner.image}" alt="${winner.name}" />
+        </div>
         <h2><span class="accent">${winner.name}</span></h2>
         <p class="description">${winner.description.replace(/\n/g, "<br>")}</p>
         <p class="description">${winner.bridgeLine}</p>
@@ -212,6 +219,10 @@ function render() {
 }
 
 function updateUiScale() {
+  if (window.innerWidth <= 700) {
+    document.documentElement.style.setProperty("--ui-scale", "1");
+    return;
+  }
   document.documentElement.style.setProperty("--ui-scale", "1");
   const screen = appRoot.querySelector(".screen");
   const content = appRoot.querySelector(
